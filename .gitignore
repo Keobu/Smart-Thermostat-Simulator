@@ -1,0 +1,10 @@
+.vs/
+out/
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake-build-*/
+*.vcxproj.user
+*.VC.db
+Thumbs.db
+.DS_Store
