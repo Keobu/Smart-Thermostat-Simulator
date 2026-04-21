@@ -14,6 +14,7 @@ class Thermostat {
 		void turnOn();
 		void turnOff();
 		void updateTemperature();
+		void showStatus();
 
 		//modify
 		void setTemperatureTarget(float target);

@@ -32,26 +32,34 @@ float Thermostat::getTemperatureTarget() {
 }
 
 void Thermostat::updateTemperature() {
-	if (powerOn == true) {
-		if (currentTemperature < temperatureTarget) {
-			currentTemperature += 0.5;
-		}
-		else if (currentTemperature > temperatureTarget) {
-			currentTemperature -= 0.5;
-		}
-		else if (currentTemperature == temperatureTarget) {
-			std::cout << "Temperature is stable at " << currentTemperature << "°C." << std::endl;
-			turnOff()
-		}
-		else {
-			if (currentTemperature > 16.0) {
-				currentTemperature -= 0.5;
-			}
-			else if (currentTemperature < 16.0) {
-				currentTemperature += 0.5;
-			}
+    if (powerOn) {
+        if (currentTemperature < temperatureTarget) {
+            currentTemperature += 0.5f;
+        }
+        else if (currentTemperature > temperatureTarget) {
+            currentTemperature -= 0.5f;
+        }
 
-		}
+        if (currentTemperature == temperatureTarget) {
+            turnOff();
+        }
+    }
+    else {
+        if (currentTemperature > 16.0f) {
+            currentTemperature -= 0.5f;
+        }
+        else if (currentTemperature < 16.0f) {
+            currentTemperature += 0.5f;
+        }
+    }
+}
+void Thermostat::showStatus() {
+	if (powerOn) {
+		std::cout << "Thermostat is ON\n";
+	}else {
+		std::cout << "Thermostat is OFF\n";
 	}
+	std::cout << "Current temperature: " << currentTemperature << "°C\n";
+	std::cout << "Temperature target: " << temperatureTarget << "°C\n";
 }
 	
