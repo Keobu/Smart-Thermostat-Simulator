@@ -1,16 +1,21 @@
 #include "Thermostat.h"
 #include <iostream>
 #include <string>
+#include "Logger.h"
+
 
 void Thermostat::turnOn() {
 	powerOn = true;
+	Logger::log("Thermostat turned on");
 }
 void Thermostat::turnOff() {
 	powerOn = false;
+	Logger::log("Thermostat turned off");
 }
 
 void Thermostat::setTemperatureTarget(float target) {
 	temperatureTarget = target;
+	Logger::log("Temperature target set to " + std::to_string(target) + "°C");
 }
 
 bool Thermostat::isPowerOn() {
@@ -35,21 +40,34 @@ void Thermostat::updateTemperature() {
     if (powerOn) {
         if (currentTemperature < temperatureTarget) {
             currentTemperature += 0.5f;
+            if (currentTemperature > temperatureTarget) {
+                currentTemperature = temperatureTarget;
+            }
         }
         else if (currentTemperature > temperatureTarget) {
             currentTemperature -= 0.5f;
+            if (currentTemperature < temperatureTarget) {
+                currentTemperature = temperatureTarget;
+            }
         }
 
         if (currentTemperature == temperatureTarget) {
+            Logger::log("Temperature target reached: " + std::to_string(currentTemperature) + "°C");
             turnOff();
         }
     }
     else {
         if (currentTemperature > 16.0f) {
             currentTemperature -= 0.5f;
+            if (currentTemperature < 16.0f) {
+                currentTemperature = 16.0f;
+            }
         }
         else if (currentTemperature < 16.0f) {
             currentTemperature += 0.5f;
+            if (currentTemperature > 16.0f) {
+                currentTemperature = 16.0f;
+            }
         }
     }
 }
