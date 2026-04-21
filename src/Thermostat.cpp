@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include "Logger.h"
+#include "TemperatureSensor.h"
 
 
 void Thermostat::turnOn() {
@@ -37,39 +38,22 @@ float Thermostat::getTemperatureTarget() {
 }
 
 void Thermostat::updateTemperature() {
-    if (powerOn) {
-        if (currentTemperature < temperatureTarget) {
-            currentTemperature += 0.5f;
-            if (currentTemperature > temperatureTarget) {
-                currentTemperature = temperatureTarget;
-            }
-        }
-        else if (currentTemperature > temperatureTarget) {
-            currentTemperature -= 0.5f;
-            if (currentTemperature < temperatureTarget) {
-                currentTemperature = temperatureTarget;
-            }
-        }
+	if (powerOn) {
+		currentTemperature = readTemperatureFromSensor();
+		Logger::log("Temperature updated: " + std::to_string(currentTemperature) + "°C");
 
-        if (currentTemperature == temperatureTarget) {
-            Logger::log("Temperature target reached: " + std::to_string(currentTemperature) + "°C");
-            turnOff();
-        }
-    }
-    else {
-        if (currentTemperature > 16.0f) {
-            currentTemperature -= 0.5f;
-            if (currentTemperature < 16.0f) {
-                currentTemperature = 16.0f;
-            }
-        }
-        else if (currentTemperature < 16.0f) {
-            currentTemperature += 0.5f;
-            if (currentTemperature > 16.0f) {
-                currentTemperature = 16.0f;
-            }
-        }
-    }
+		if (currentTemperature < temperatureTarget) {
+			Logger::log("Heating ON");
+		}
+		else if (currentTemperature >= temperatureTarget) {
+			currentTemperature = temperatureTarget;
+			Logger::log("Temperature target reached");
+			turnOff();
+		}
+	}
+	else {
+		Logger::log("Thermostat is OFF");
+	}
 }
 void Thermostat::showStatus() {
 	if (powerOn) {
@@ -80,4 +64,7 @@ void Thermostat::showStatus() {
 	std::cout << "Current temperature: " << currentTemperature << "°C\n";
 	std::cout << "Temperature target: " << temperatureTarget << "°C\n";
 }
-	
+
+float Thermostat::readTemperatureFromSensor() {
+    return sensor.readTemperature();
+}
