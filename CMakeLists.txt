@@ -1,12 +1,14 @@
-﻿# CMakeList.txt: progetto CMake per Smart Thermostat Simulator. Includere l'origine e definire
-# qui la logica specifica del progetto.
-#
+﻿cmake_minimum_required(VERSION 3.12)
 
-# Aggiungere l'origine all'eseguibile di questo progetto.
-add_executable (CMakeTarget "src/main.cpp" "Smart Thermostat Simulator.h" "src/Thermostat.cpp" "src/TemperatureSensor.cpp" "src/Logger.cpp" "include/Thermostat.hpp" "include/TemperatureSensor.h")
+project(SmartThermostatSimulator)
 
-if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET CMakeTarget PROPERTY CXX_STANDARD 20)
-endif()
+add_executable(SmartThermostatSimulator
+    src/main.cpp
+    src/Thermostat.cpp
+    src/TemperatureSensor.cpp
+    src/Logger.cpp
+)
 
-# TODO: Aggiungere i test e, se necessario, installare le destinazioni.
+target_include_directories(SmartThermostatSimulator PRIVATE include)
+
+set_property(TARGET SmartThermostatSimulator PROPERTY CXX_STANDARD 20)

@@ -1,31 +1,28 @@
+#pragma once
+#include <iostream>
+#include "TemperatureSensor.h"
+#include "Logger.h"
 
 class Thermostat {
+private:
+    bool powerOn;
+    float currentTemperature;
+    float temperatureTarget;
+    TemperatureSensor sensor;
 
-	private:
-		bool powerOn;
-		float currentTemperature;
-		float temperatureTarget;
+    float readTemperatureFromSensor();
 
-	public: 
-		
-		Thermostat();
+public:
+    Thermostat();
 
-		//action
-		void turnOn();
-		void turnOff();
-		void updateTemperature();
-		void showStatus();
+    void turnOn();
+    void turnOff();
+    void setTemperatureTarget(float target);
+    bool isPowerOn();
 
-		//modify
-		void setTemperatureTarget(float target);
+    float getCurrentTemperature();
+    float getTemperatureTarget();
 
-		//lecture
-		bool isPowerOn();
-		float getCurrentTemperature();
-		float getTemperatureTarget();
-
-
-
+    void updateTemperature();
+    void showStatus();
 };
-
-

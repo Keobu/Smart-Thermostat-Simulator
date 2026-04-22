@@ -1,90 +1,63 @@
 ﻿#include <iostream>
-#include <chrono>
 #include <thread>
+#include <chrono>
+#include <ctime>
+#include <cstdlib>
+
 #include "Thermostat.h"
+#include "Logger.h"
 
-
-using namespace std;
-//intestation of the main function to test the Thermostat class
 void showHeader() {
-	std::cout << "=============================\n";
-	std::cout << "   Welcome to Thermostat App  \n";
-	std::cout << "=============================\n";
+    std::cout << "=============================\n";
+    std::cout << "   Welcome to Thermostat App \n";
+    std::cout << "=============================\n";
 }
 
+int main() {
+    std::srand(static_cast<unsigned>(std::time(nullptr)));
 
-int main()
-{
-	Thermostat thermostat;
+    Thermostat thermostat;
+    char answer;
 
-	if (thermostat.isPowerOn()) {
-		thermostat.turnOff();
-		std::cout << "Thermostat turned OFF\n";
-	}
-	else {
-		thermostat.turnOn();
-		std::cout << "Thermostat turned ON\n";
-	}
+    showHeader();
 
-	if (thermostat.isPowerOn()) {
-		std::cout << "Now it is ON\n";
-	}
-	else {
-		std::cout << "Now it is OFF\n";
-	}
+    thermostat.turnOn();
+    Logger::log("Thermostat started at program launch");
 
-	std::cout << "Current temperature: " << thermostat.getCurrentTemperature() << "°C\n";
-	std::cout << "Temperature target: " << thermostat.getTemperatureTarget() << "°C\n";
+    while (true) {
+        thermostat.updateTemperature();
 
+        std::this_thread::sleep_for(std::chrono::seconds(1));
 
-	while (true) {
-		std::cout << "do you want turn on the Thermostat (y/n)? ";
-		char answer;
-		std::cin >> answer;
-		if (answer == 'y') {
-			thermostat.turnOn();
-			Logger::log("Thermostat turned on by user");
+        thermostat.showStatus();
 
-		}
-		else {
-			thermostat.turnOff();
-			Logger::log("Thermostat turned off by user");
-			break;
-		};
+        std::cout << "Do you want to change the temperature target (y/n)? ";
+        std::cin >> answer;
 
-		thermostat.updateTemperature();
+        if (answer == 'y') {
+            std::cout << "Enter the temperature target: ";
+            float target;
+            std::cin >> target;
 
-		//little break
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-	
-		//show status of the thermostat
+            thermostat.setTemperatureTarget(target);
+            thermostat.turnOn();
 
-		thermostat.showStatus();
-		
-		std::cout << "Do you want to change the temperature target (y/n)? ";
-		std::cin >> answer;
-		
-		if (answer == 'y') {
-			std::cout << "Enter the Temperature target: ";
-			float target;
-			std::cin >> target;
-			thermostat.setTemperatureTarget(target);
-			std::cout << "Temperature target set to " << thermostat.getTemperatureTarget() << "°C\n";
-			//start the thermostat
-			thermostat.turnOn();
-			Logger::log("Thermostat turned on after setting temperature target");
-		}
-		else {
-			std::cout << "Temperature target remains at " << thermostat.getTemperatureTarget() << "°C\n";
-		}
-		
-		std::cout << "Do you want to continue (y/n)? ";
-		std::cin >> answer;
-		if (answer != 'y') {
-			Logger::log("User chose to exit the program");
-			break;
-		}
-	}
+            std::cout << "Temperature target set to "
+                << thermostat.getTemperatureTarget() << " C\n";
+        }
+        else {
+            std::cout << "Temperature target remains at "
+                << thermostat.getTemperatureTarget() << " C\n";
+        }
 
-	return 0;
+        std::cout << "Do you want to continue (y/n)? ";
+        std::cin >> answer;
+
+        if (answer != 'y') {
+            Logger::log("User chose to exit the program");
+            break;
+        }
+    }
+
+    return 0;
 }

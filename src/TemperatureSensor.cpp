@@ -7,8 +7,10 @@ TemperatureSensor::TemperatureSensor() {
 }
 
 float TemperatureSensor::readSensorData() {
-	//simulate temperature changes
-	temperature = 15.0f + static_cast<float>(rand()) / (RAND_MAX / 10.0f);
+	//simulate temperature increase slowly over 0.5 degree per read
+	float variation = (static_cast<float>(rand()) / RAND_MAX)- 0.5f;
+	temperature += variation * 0.5f; //random variation up to ±0.25 degree
+
 	return temperature;
 }
 
