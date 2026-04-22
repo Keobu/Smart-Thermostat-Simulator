@@ -21,7 +21,6 @@ int main() {
 
     showHeader();
 
-    thermostat.turnOn();
     Logger::log("Thermostat started at program launch");
 
     while (true) {

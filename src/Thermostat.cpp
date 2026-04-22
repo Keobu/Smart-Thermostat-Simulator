@@ -55,19 +55,27 @@ void Thermostat::updateTemperature() {
         break;
     }
 
-    if (powerOn) {
+    if (!powerOn) {
+        if (currentTemperature < (effectiveTarget - tolerance)) {
+            Logger::log("Temperature low -> Auto turning ON");
+            turnOn();
+        }
+    }
+    else {
         if (currentTemperature < (effectiveTarget - tolerance)) {
             Logger::log("Heating ON");
         }
         else if (currentTemperature >= effectiveTarget) {
             currentTemperature = effectiveTarget;
-            Logger::log("Temperature target reached");
+            Logger::log("Temperature target reached -> Auto turning OFF");
             turnOff();
         }
         else {
             Logger::log("Within tolerance range");
         }
     }
+}
+
 void Thermostat::showStatus() {
     if (powerOn) {
         std::cout << "Thermostat is ON\n";
