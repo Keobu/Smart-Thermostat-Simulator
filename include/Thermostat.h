@@ -3,12 +3,19 @@
 #include "TemperatureSensor.h"
 #include "Logger.h"
 
+enum class Mode {
+    Eco,
+	Comfort,
+    Boost
+};
+
 class Thermostat {
 private:
     bool powerOn;
     float currentTemperature;
     float temperatureTarget;
     TemperatureSensor sensor;
+    Mode currentMode;
 
     float readTemperatureFromSensor();
 
@@ -25,4 +32,7 @@ public:
 
     void updateTemperature();
     void showStatus();
+
+	void setMode(Mode mode);
+    Mode getMode();
 };
