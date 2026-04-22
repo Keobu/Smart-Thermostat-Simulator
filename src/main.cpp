@@ -49,6 +49,32 @@ int main() {
                 << thermostat.getTemperatureTarget() << " C\n";
         }
 
+        std::cout << "Do you want to change mode (y/n)? ";
+        std::cin >> answer;
+
+        if (answer == 'y') {
+            int modeChoice;
+            std::cout << "Select mode:\n";
+            std::cout << "1. Eco\n";
+            std::cout << "2. Comfort\n";
+            std::cout << "3. Boost\n";
+            std::cout << "Choice: ";
+            std::cin >> modeChoice;
+
+            if (modeChoice == 1) {
+                thermostat.setMode(Mode::Eco);
+            }
+            else if (modeChoice == 2) {
+                thermostat.setMode(Mode::Comfort);
+            }
+            else if (modeChoice == 3) {
+                thermostat.setMode(Mode::Boost);
+            }
+            else {
+                std::cout << "Invalid mode choice\n";
+            }
+        }
+
         std::cout << "Do you want to continue (y/n)? ";
         std::cin >> answer;
 
