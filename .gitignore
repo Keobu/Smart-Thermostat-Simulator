@@ -1,6 +1,7 @@
 .vs/
 out/
 build/
+*.log
 CMakeFiles/
 CMakeCache.txt
 cmake-build-*/

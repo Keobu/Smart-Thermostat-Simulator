@@ -1,0 +1,6 @@
+[2026-01-01 10:00:00] Thermostat started
+[2026-01-01 10:00:01] Current temperature updated: 15.8 C
+[2026-01-01 10:00:01] Temperature low -> Auto turning ON
+[2026-01-01 10:00:02] Heating ON
+[2026-01-01 10:00:05] Mode set to Boost
+[2026-01-01 10:00:10] Temperature target reached -> Auto turning OFF
